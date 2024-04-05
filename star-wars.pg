@@ -8,4 +8,4 @@ Padmé  -- Anakin :marriage  episode:II
 Anakin -> R2D2   :owns      episode:II           
 Anakin -> Luke   :parent    episode:III 
 Padmé  -> Luke   :parent    episode:III       
-R2D2   -> Luke   :owns      episode:IV 
+Luke   -> R2D2   :owns      episode:IV 

@@ -1,5 +1,6 @@
 project:
   type: manuscript
+  output-dir: docs
 
 manuscript:
   article: index.md
@@ -7,8 +8,6 @@ manuscript:
 format:
   html: default
   docx: default
-  jats: default
-  pdf: default
 
 execute:
   freeze: true

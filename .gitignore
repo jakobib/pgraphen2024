@@ -1,2 +1,2 @@
 /.quarto/
-_manuscript
+docs/*.ipynb
