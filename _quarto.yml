@@ -1,0 +1,15 @@
+project:
+  type: manuscript
+
+manuscript:
+  article: index.md
+
+format:
+  html: default
+  docx: default
+  jats: default
+  pdf: default
+
+execute:
+  freeze: true
+
