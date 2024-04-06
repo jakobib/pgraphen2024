@@ -7,18 +7,21 @@ authors:
 #bibliography: references.bib
 ---
 
+*VORLÄUFIGER ARTIKEL-ENTWURF*
+
 Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch
 das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass
 ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt
 NFDI4Objects, verstärkt mit so genannten **Property-Graphen** zur
 Strukturierung und Verarbeitung von (Meta)daten beschäftige. 
 
-Property-Graphen bilden ein Datenbankmodell, das unter die so genannten
-NoSQL-Datenbanken und noch spezieller unter die Graphdatenbanken fällt. Hierbei
-werden Daten nicht wie bei SQL in Form von Tabellen sondern in Form von Graphen
-aus Knoten gespeichert, die durch Kanten miteinander verbunden sind. Eine
-Besonderheit von Property-Graphen ist, dass sowohl Knoten als auch Kanten mit
-Eigenschaften versehen werden können.
+Property-Graphen (oft auch als Labeled Property Graphen bezeichnet) bilden ein
+Datenbankmodell, das unter die so genannten NoSQL-Datenbanken und noch
+spezieller unter die Graphdatenbanken fällt. Hierbei werden Daten nicht wie bei
+SQL in Form von Tabellen sondern in Form von Graphen aus Knoten gespeichert,
+die durch Kanten miteinander verbunden sind. Eine Besonderheit von
+Property-Graphen ist, dass sowohl Knoten als auch Kanten mit Eigenschaften
+versehen werden können.
 
 ## Beispiel
 
@@ -35,18 +38,18 @@ Kodierung des Graphen im **PG Format**, das ich derzeit zusammen mit den
 Wissenschaftler Hirokazu Chiba, Ryota Yamanaka, und Shota Matsumoto als
 Austauschformat für Property-Graphen entwickle. In dem Beispiel entsprechen die
 Namen der Charaktere den Node-Identifiern und ihr Typ den Node-Labels . Das
-Geschlecht und die jeweilige Episode sind als Properties den Knoten und Kanten
-zugeordnet. Kanten haben ebenfalls ein Label mit der Beziehungsart und sie
-können gerichtet (`->`) oder ungerichtet (`--`) sein.
+Geschlecht und die jeweilige Episode sind als Eigenschaften den Knoten und
+Kanten zugeordnet. Kanten haben ebenfalls ein Label mit der Beziehungsart und
+sie können gerichtet (`->`) oder ungerichtet (`--`) sein.
 
 ```{#lst-pg .pg lst-cap="Beispiel-Graph im PG Format"}
-# Knoten mit Knoten-Typ (Label) und Properties
+# Knoten mit Knoten-Typ (Label) und Eigenschaften
 Padmé  :person  gender:female
 Anakin :person  gender:male                 
 Luke   :person  gender:male                 
 R2D2   :robot              
    
-# Kanten mit Kanten-Typ (Label) und Properties
+# Kanten mit Kanten-Typ (Label) und Eigenschaften
 Padmé  -> R2D2   :owns      episode:1
 Padmé  -- Anakin :marriage  episode:2
 Anakin -> R2D2   :owns      episode:2    
@@ -56,10 +59,10 @@ Luke   -> R2D2   :owns      episode:4
 ```
 
 Der Graph kann auf verschiedene Weise gespeichert und visualisiert werden.
-@fig-image zeigt eine mögliche Darstellung ohne Properties. Mit Knoten, Kanten
-mit Richtungen, Labels und Properties sind schon alle Elemente von
+@fig-image zeigt eine mögliche Darstellung ohne Eigenschaften. Mit Knoten,
+Kanten mit Richtungen, Labels und Eigenschaften sind schon alle Elemente von
 Property-Graphen aufgezählt. Je nach konkretem Datenformat und Datenbanksystem
-können Labels und Properties auch mehrere Werte annehmen und verschiedene
+können Labels und Eigenschaften auch mehrere Werte annehmen und verschiedene
 Datentypen annehmen.
 
 ![](star-wars-blitzboard.png){#fig-image fig-cap="Visualisierung des Beispiel-Graphen"}
@@ -88,7 +91,7 @@ unterstützen.
 
 Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit
 folgenden Cypher-Statements angelegt werden (@lst-cypher). Da Knoten-Identifier
-in der Datenbank rein intern sind, sind die Namen zusätzlich als Property
+in der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft
 `name` angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist
 die Beziehung zwischen Padmé und Anakin weggelassen.
 
@@ -126,7 +129,83 @@ einem Property-Graphen durchzuführen.
 
 ## Vergleich mit RDF
 
-Zu den Graphdatenbanken gehören neben Property Graphen auch die RDF-Datenbanken, in denen Daten nach dem RDF-Datenmodell gespeichert werden können.
+Zu den Graphdatenbanken gehören auch die so genannten **Triple-Stores**, in
+denen Daten dem RDF-Datenmodell nach gespeichert werden.  Da RDF und die damit
+verbundenen Konzepte von Linked Data und Semantic bereits seit Jahrzehnten
+propagiert werden, ist die Frage berechtigt, ob nicht mal wieder mit
+Property-Graphen als neuem Trend das Rad neu erfunden wird. Tatsächlich sind
+RDF und Property Graphen aus unterschiedlicher Motivation heraus entstanden und
+haben daher verschiedene Schwerpunkte und Einsatzzwecke.
+
+RDF ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen
+von Daten.  Grundstein bilden dabei die übergreifend nutzbaren URIs zur
+weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht
+es dagegen primär um die effiziente Speicherung und Auswertung von vernetzen
+Daten in einer abgeschlossenen Datenbank.
+
+...
+
+Rein formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei
+Knoten als "Ressourcen" und Kanten als "Triples" bezeichnet werden. Eine
+Entsprechung zu Eigenschaften gibt es in RDF nicht, Knoten haben keine
+Knoten-Label und Kanten-Label werden "Properties" genannt. Die Rolle der
+fehlenden Knoten-Label und Knoten-Eigenschaften übernehmen in RDF zusätzliche
+Kanten (die sich allerdings nicht von "normalen" Kanten unterscheiden lassen).
+@lst-ttl zeigt den Beispiel-Graphen in RDF-Turtle-Syntax und @lst-sparql der
+ersten Cypher-Abfrage in @lst-match entsprechende Abfrage in der RDF-eigenen
+Abfragesprache SPARQL.
+
+```{#lst-ttl .ttlr lst-cap="Beispiel-Graph in RDF/Turtle (ohne Kanten-Eigenschaften)"}
+<Padmé>  a <person> ; <gender> "female" ; <name> "Padmé" .
+<Anakin> a <person> ; <gender> "male" ; <name> "Anakin" .
+<Luke>   a <person> ; <gender> "male" ; <name> "Luke"  .
+<R2D2>   a <robot> ; <name> "R2D2" .
+
+<Padmé>  <owns> <R2D2> .
+<Anakin> <owns> <R2D2> .
+<Anakin> <parent> <Luke> .
+<Padmé> <parent> <Luke> .
+<Luke>  <owns> <R2D2> .
+```
+
+```{#lst-sparql .sparql lst-cap="SPARQL-Abfrage"}
+SELECT ?p { ?p <parent> [ a <person> ; <name> "Luke" ] }
+```
+
+Die grundsätzliche Beschränkung in RDF ... hat zu verschiedenen Erweiterungen geführt
+von denen RDF-star ... Die dazu gehörigen Standards befinden sich allerdings noch
+in Bearbeitung ... im aktuellen Entwurf von RDF/Turtle 1.2 könnten Kanten...
+
+```ttl
+<Padmé>  <owns> <R2D2>   {| <episode> 1 |} .
+<Anakin> <owns> <R2D2>   {| <episode> 2 |} .   
+<Anakin> <parent> <Luke> {| <episode> 3 |} .
+<Padmé> <parent> <Luke>  {| <episode> 3 |} .
+<Luke>  <owns> <R2D2>    {| <episode> 4 |} .
+```
+
+SPARQL 1.2 (Working draft!)
+
+```sparql
+SELECT ?name {  
+  ?r2d2 <name> "R2D2"
+  BIND( << ?p <owns> ?r2d2 >> AS ?e )
+  ?p <name> ?name
+  FILTER ( e.episode >= 2 )
+}
+```
+
+ RDF | Property Graphen 
+-----|-----------------
+Etablierte Standards des W3C | Laufende Standardisierung
+URIs als globale Identifier | -
+Zusammenführung aus unterschiedlichen Quellen | 
+... |
+Abfragesprache SPARQL | Abfragesprache Cypher
+Schemasprachen ... | ...
+
+PG und RDF lassen sich zumindest einfacher aufeinander abbilden als Formate
+in hierarchischen oder feldbasierten Formaten wie MARC, PICA, XML.
 
 - Triples
 - Können integriert werden
@@ -138,7 +217,21 @@ Vor- und Nachteile von Property Graphen im Vergleich zu RDF:
 - Abfragesprache Cypher etwas einfacher als SPARQL
 - Nicht so einfach mit externen Daten integriertbar
 
-Fazit: Beides hat seinen Einsatzzweck.
+Semantik (Inference-Regeln).
+
+Die Praxis hat allerdings gezeigt, dass Ontologien allein zur Sicherstellung 
+von Datenqualität nicht ausreichen sondern zusätzliche
+
+Schema (Shacl/SheX)
+
+Nicht zuletzt trägt die Herkunft und Stärke von RDF aus der Datenintegration
+dazu bei, dass RDF-Modelle tendenziell eher projektübergreifend und nachnutzbar
+angelegt werden. Dieser Vorteil birgt in der Praxis allerdings die auch die
+Gefahr von langwierigen Prozessen und theoretischen Lösungen, die
+möglichwerweise an der Praxis vorbeigehen.
+
+PG: Nur innerhalb der eigenen Datenbank konsistentes, abgeschlossenes Modell
+RDF: offen (Open World Assumption)
 
 ## Property Graphen an der VZG
 
