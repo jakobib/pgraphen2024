@@ -1,14 +1,8 @@
 project:
   type: manuscript
   output-dir: docs
-
+  render:
+    - "!*.md"
 manuscript:
-  article: index.md
-
-format:
-  html: default
-  docx: default
-
-execute:
-  freeze: true
+  article: index.qmd
 

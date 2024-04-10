@@ -1,11 +1,13 @@
-Padmé  :person  gender:female 
+# Knoten mit Knoten-Typ (Label) und Eigenschaften
+Padmé  :person  gender:female
 Anakin :person  gender:male                 
 Luke   :person  gender:male                 
 R2D2   :robot              
    
-Padmé  -> R2D2   :owns      episode:I 
-Padmé  -- Anakin :marriage  episode:II 
-Anakin -> R2D2   :owns      episode:II           
-Anakin -> Luke   :parent    episode:III 
-Padmé  -> Luke   :parent    episode:III       
-Luke   -> R2D2   :owns      episode:IV 
+# Kanten mit Kanten-Typ (Label) und Eigenschaften
+Padmé  -> R2D2   :owns      episode:1
+Padmé  -- Anakin :marriage  episode:2
+Anakin -> R2D2   :owns      episode:2    
+Anakin -> Luke   :child     episode:3
+Padmé  -> Luke   :child     episode:3 
+Luke   -> R2D2   :owns      episode:4

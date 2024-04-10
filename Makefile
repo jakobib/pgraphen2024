@@ -1,4 +1,4 @@
 .PHONY: html
 
 html:
-	quarto render && rm docs/*.ipynb
+	quarto render && rm -f docs/*.ipynb

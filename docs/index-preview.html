@@ -19,7 +19,27 @@
         margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
         vertical-align: middle;
       }
-    </style>
+      /* CSS for citations */
+      div.csl-bib-body { }
+      div.csl-entry {
+        clear: both;
+        margin-bottom: 0em;
+      }
+      .hanging-indent div.csl-entry {
+        margin-left:2em;
+        text-indent:-2em;
+      }
+      div.csl-left-margin {
+        min-width:2em;
+        float:left;
+      }
+      div.csl-right-inline {
+        margin-left:2em;
+        padding-left:1em;
+      }
+      div.csl-indent {
+        margin-left: 2em;
+      }    </style>
 
     <style>
       body.hypothesis-enabled #quarto-embed-header {
@@ -122,13 +142,13 @@
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
-     
+     <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">  
       <meta name="citation_title" content="Property-Graphen: eine kurze Einführung">
 <meta name="citation_author" content="Jakob Voß">
 <meta name="citation_language" content="de">
+<meta name="citation_reference" content="citation_title=Property Graph Exchange Format;,citation_author=Voß Chiba;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://github.com/pg-format/specification;">
 </head>
 
   <body class="quarto-notebook">
@@ -137,7 +157,7 @@
       <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Zurück zum Artikel</a>
       <h6><i class="bi bi-journal-code"></i> Article Notebook</h6>
 
-            <a href="./index.md" class="btn btn-primary quarto-download-embed" download="index.md">Notizbuch herunterladen</a>
+            <a href="./index.qmd" class="btn btn-primary quarto-download-embed" download="index.qmd">Quellcode herunterladen</a>
           </div>
 
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
@@ -185,7 +205,8 @@
    
   <ul>
   <li><a href="#beispiel" id="toc-beispiel" class="nav-link active" data-scroll-target="#beispiel">Beispiel</a></li>
-  <li><a href="#datenbanken" id="toc-datenbanken" class="nav-link" data-scroll-target="#datenbanken">Datenbanken</a></li>
+  <li><a href="#property-graph-datenbanken" id="toc-property-graph-datenbanken" class="nav-link" data-scroll-target="#property-graph-datenbanken">Property-Graph-Datenbanken</a></li>
+  <li><a href="#property-graph-exchange-format" id="toc-property-graph-exchange-format" class="nav-link" data-scroll-target="#property-graph-exchange-format">Property Graph Exchange Format</a></li>
   <li><a href="#vergleich-mit-rdf" id="toc-vergleich-mit-rdf" class="nav-link" data-scroll-target="#vergleich-mit-rdf">Vergleich mit RDF</a></li>
   <li><a href="#property-graphen-an-der-vzg" id="toc-property-graphen-an-der-vzg" class="nav-link" data-scroll-target="#property-graphen-an-der-vzg">Property Graphen an der VZG</a></li>
   <li><a href="#zusammenfassung" id="toc-zusammenfassung" class="nav-link" data-scroll-target="#zusammenfassung">Zusammenfassung</a></li>
@@ -196,54 +217,50 @@
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-       <p>Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt NFDI4Objects, verstärkt mit so genannten <strong>Property-Graphen</strong> zur Strukturierung und Verarbeitung von (Meta)daten beschäftige.</p>
-<p>Property-Graphen bilden ein Datenbankmodell, das unter die so genannten NoSQL-Datenbanken und noch spezieller unter die Graphdatenbanken fällt. Hierbei werden Daten nicht wie bei SQL in Form von Tabellen sondern in Form von Graphen aus Knoten gespeichert, die durch Kanten miteinander verbunden sind. Eine Besonderheit von Property-Graphen ist, dass sowohl Knoten als auch Kanten mit Eigenschaften versehen werden können.</p>
+       <p><em>VORLÄUFIGER ARTIKEL-ENTWURF</em></p>
+<p>Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt NFDI4Objects, verstärkt mit so genannten <strong>Property-Graphen</strong> zur Strukturierung und Verarbeitung von (Meta)daten beschäftige.</p>
+<p>Property-Graphen (oft auch als Labeled Property Graphen bezeichnet) bilden ein Datenbankmodell, das unter die so genannten NoSQL-Datenbanken und noch spezieller unter die Graphdatenbanken fällt. Hierbei werden Daten nicht wie bei SQL in Form von Tabellen sondern in Form von Graphen aus Knoten gespeichert, die durch Kanten miteinander verbunden sind. Eine Besonderheit von Property-Graphen ist, dass sowohl Knoten als auch Kanten jeweils ein oder mehrere Labels haben und mit Eigenschaften versehen werden können.</p>
 <section id="beispiel" class="level2">
 <h2 class="anchored" data-anchor-id="beispiel">Beispiel</h2>
-<p>Zur Veranschaulichung soll folgende Sammlung einiger Charaktere, Beziehungen und Eigenschaften aus dem Star-Wars-Universum dienen: Padmé, Anakin und Luke sind Personen unterschiedlichen Geschlechts und R2D2 ist ein Roboter. In Episode I gehört R2D2 zu Padmé, die ihn in Episode II Anakin zu ihrer gemeinsamen Hochzeit schenkt, und in Episode IV gelangt der Roboter zu Luke, der in Episode III als Kind von Padmé und Anakin geboren wurde.</p>
-<p>Diese Informationen lassen sich in einem Property-Graphen mit Charakteren als Knoten und ihren Beziehungen als Kanten modellieren. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;1</a> zeigt die Kodierung des Graphen im <strong>PG Format</strong>, das ich derzeit zusammen mit den Wissenschaftler Hirokazu Chiba, Ryota Yamanaka, und Shota Matsumoto als Austauschformat für Property-Graphen entwickle. In dem Beispiel entsprechen die Namen der Charaktere den Node-Identifiern und ihr Typ den Node-Labels . Das Geschlecht und die jeweilige Episode sind als Properties den Knoten und Kanten zugeordnet. Kanten haben ebenfalls ein Label mit der Beziehungsart und sie können gerichtet (<code>-&gt;</code>) oder ungerichtet (<code>--</code>) sein.</p>
-<div id="lst-pg" class="pg listing quarto-float">
-<figure class="quarto-float quarto-float-lst figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;1: Beispiel-Graph im PG Format
-</figcaption>
-<div aria-describedby="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<pre id="lst-pg" class="pg"><code># Knoten mit Knoten-Typ (Label) und Properties
-Padmé  :person  gender:female
-Anakin :person  gender:male                 
-Luke   :person  gender:male                 
-R2D2   :robot              
-   
-# Kanten mit Kanten-Typ (Label) und Properties
-Padmé  -&gt; R2D2   :owns      episode:1
-Padmé  -- Anakin :marriage  episode:2
-Anakin -&gt; R2D2   :owns      episode:2    
-Anakin -&gt; Luke   :parent    episode:3
-Padmé  -&gt; Luke   :parent    episode:3 
-Luke   -&gt; R2D2   :owns      episode:4</code></pre>
-</div>
-</figure>
-</div>
-<p>Der Graph kann auf verschiedene Weise gespeichert und visualisiert werden. <a href="#fig-image" class="quarto-xref">Abbildung&nbsp;1</a> zeigt eine mögliche Darstellung ohne Properties. Mit Knoten, Kanten mit Richtungen, Labels und Properties sind schon alle Elemente von Property-Graphen aufgezählt. Je nach konkretem Datenformat und Datenbanksystem können Labels und Properties auch mehrere Werte annehmen und verschiedene Datentypen annehmen.</p>
-<div id="fig-image" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-cap="Visualisierung des Beispiel-Graphen">
+<p>Zur Veranschaulichung soll folgende Sammlung einiger Charaktere, Beziehungen und Eigenschaften aus dem Star-Wars-Universum dienen: Padmé, Anakin und Luke sind Personen unterschiedlichen Geschlechts und R2D2 ist ein Roboter. In Episode 1 gehört R2D2 zu Padmé, die ihn in Episode 2 Anakin zu ihrer gemeinsamen Hochzeit schenkt, und in Episode 4 gelangt der Roboter zu Luke, der in Episode 3 als Kind von Padmé und Anakin geboren wurde.</p>
+<p>Diese Informationen lassen sich in einem Property-Graphen mit Charakteren als Knoten und ihren Beziehungen als Kanten modellieren. <a href="#fig-image" class="quarto-xref">Abbildung&nbsp;1</a> zeigt eine mögliche Visualisierung dieses Graphen. Darin sind Knoten-Identifier fett hervorgehoben, Labels kursiv und Eigenschaften in Festbreitenschriftart. Bis auf die Beziehung zwischen Padmé und Anakin sind alle Kanten gerichtet.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-image" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="star-wars-blitzboard.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="star-wars-blitzboard.png" id="fig-image" class="img-fluid figure-img" data-fig-cap="Visualisierung des Beispiel-Graphen"></a>
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-image">flowchart LR
+   Padme["&lt;b&gt;Padmé&lt;/b&gt;&lt;br&gt;&lt;i&gt;person&lt;/i&gt;&lt;br&gt;&lt;tt&gt;gender:female&lt;/tt&gt;"]
+   Anakin["&lt;b&gt;Anakin&lt;/b&gt;&lt;br&gt;&lt;i&gt;person&lt;/i&gt;&lt;br&gt;&lt;tt&gt;gender:male&lt;/tt&gt;"]              
+   Luke["&lt;b&gt;Luke&lt;/b&gt;&lt;br&gt;&lt;i&gt;person&lt;/i&gt;&lt;br&gt;&lt;tt&gt;gender:male&lt;/tt&gt;"]
+   R2D2["&lt;b&gt;R2D2&lt;/b&gt;&lt;br&gt;&lt;i&gt;robot&lt;/i&gt;"]
+   Padme -- "&lt;i&gt;owns&lt;/i&gt;&lt;br&gt;&lt;tt&gt;episode:1&lt;/tt&gt;" --&gt; R2D2
+   Padme -- "&lt;i&gt;marriage&lt;i&gt;&lt;br&gt;&lt;tt&gt;episode:2&lt;/tt&gt;" --- Anakin
+   Anakin -- "&lt;i&gt;owns&lt;/i&gt;&lt;br&gt;&lt;tt&gt;episode:2&lt;/tt&gt;" --&gt; R2D2
+   Anakin -- "&lt;i&gt;child&lt;/i&gt;&lt;br&gt;&lt;tt&gt;episode:3&lt;/tt&gt;" --&gt; Luke
+   Padme -- "&lt;i&gt;child&lt;/i&gt;&lt;br&gt;&lt;tt&gt;episode:3&lt;/tt&gt;" --&gt; Luke      
+   Luke -- "&lt;i&gt;owns&lt;/i&gt;&lt;br&gt;&lt;tt&gt;episode:4&lt;/tt&gt;" --&gt; R2D2
+</pre>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Abbildung&nbsp;1
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;1: Visualisierung des Beispiel-Graphen
 </figcaption>
 </figure>
 </div>
+</div>
+</div></div>
+<p>Mit Knoten, gerichteten und ungerichteten Kanten, Labels und Eigenschaften sind schon alle Elemente von Property-Graphen aufgezählt. Zur Kodierung dieser Graphen gibt es allerdings viele verschiedene Datenormate und Datenbanksysteme, die sich in Details wie den erlaubten Zeichen in Identifiern, der Wiederholbarkeit von Labels und Eigenschaften und in den möglichen Datentypen von Eigenschaftswerten (im Beispiel Zeichenkette für die Eigenschaft <code>gender</code> und Zahl für die Eigenschaft <code>episode</code>) unterscheiden. Im Folgenden werden zwei mögliche Kodierungen für Property-Graphen vorgestellt und anschließend auf Gemeinsamkeiten und Unterschiede zum RDF-Format eingegangen.</p>
 </section>
-<section id="datenbanken" class="level2">
-<h2 class="anchored" data-anchor-id="datenbanken">Datenbanken</h2>
-<p>Etabliert wurden Property-Graphen insbesondere durch das Datenbankmanagementsystem (DBMS) <a href="https://neo4j.com/">Neo4J</a>. Die Open-Source-Software war lange Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache Cypher (Siehe <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;2</a> und <a href="#lst-match" class="quarto-xref">Listing&nbsp;3</a>), die inzwischen auch von anderen Anbietern unterstützt wird. Dazu zählen derzeit die Open-Source-Systeme <a href="https://kuzudb.com/">Kùzu</a>, <a href="https://memgraph.com/">Memgraph</a> und <a href="https://www.falkordb.com/">FalkorDB</a>, so dass wie bei Relationalen DBMS (RDBMS) die Gefahr für <a href="https://it-in-bibliotheken.de/management.html#vendor-lock-in">Vendor Lock-In</a> gering ist. Im letzten Update des SQL-Standard (SQL:2023) wurde zumdem unter dem Namen SQL/PGQ eine Teilmenge von Cypher als Abfragesprache für Property-Graphen in SQL-Datenbanken definiert, es ist also davon auszugehen, dass in Zukunft einige RDBMS Property-Graphen auch direkt unterstützen.</p>
-<p>Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit folgenden Cypher-Statements angelegt werden (<a href="#lst-cypher" class="quarto-xref">Listing&nbsp;2</a>). Da Knoten-Identifier in der Datenbank rein intern sind, sind die Namen zusätzlich als Property <code>name</code> angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist die Beziehung zwischen Padmé und Anakin weggelassen.</p>
+<section id="property-graph-datenbanken" class="level2">
+<h2 class="anchored" data-anchor-id="property-graph-datenbanken">Property-Graph-Datenbanken</h2>
+<p>Etabliert wurden Property-Graphen insbesondere durch das Datenbankmanagementsystem (DBMS) <a href="https://neo4j.com/">Neo4J</a>. Die Open-Source-Software war lange Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache <strong>Cypher</strong> (siehe <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> und <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a>), die inzwischen auch von anderen Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS <a href="https://kuzudb.com/">Kùzu</a>, <a href="https://memgraph.com/">Memgraph</a> und <a href="https://www.falkordb.com/">FalkorDB</a>, so dass wie bei Relationalen DBMS (RDBMS) die Gefahr für <a href="https://it-in-bibliotheken.de/management.html#vendor-lock-in">Vendor Lock-In</a> gering ist. Im letzten Update des SQL-Standard (SQL:2023) wurde zumdem unter dem Namen SQL/PGQ eine Teilmenge von Cypher als Abfragesprache für Property-Graphen in SQL-Datenbanken definiert. Es ist also davon auszugehen, dass in Zukunft weitere DBMS Property-Graphen und Cypher unterstützen.</p>
+<p>Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit folgenden Cypher-Statements angelegt werden (<a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a>). Da Knoten-Identifier in der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft <code>name</code> angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist die Beziehung zwischen Padmé und Anakin weggelassen.</p>
 <div id="lst-cypher" class="cypher listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-cypher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;2: Beispiel-Graph als Cypher-Statements
+Listing&nbsp;1: Beispiel-Graph mit Cypher-Statements
 </figcaption>
 <div aria-describedby="lst-cypher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <pre id="lst-cypher" class="cypher"><code>CREATE (Anakin:person {gender:"male", name:"Anakin"})
@@ -252,21 +269,21 @@ CREATE (Padmé:person {gender:"female", name:"Padmé"})
 CREATE (R2D2:robot {name:"R2D2"})
 CREATE (Padmé)-[:owns {episode:1}]-&gt;(R2D2)
 CREATE (Anakin)-[:owns {episode:2}]-&gt;(R2D2)
-CREATE (Anakin)-[:parent {episode:3}]-&gt;(Luke)
-CREATE (Padmé)-[:parent {episode:3}]-&gt;(Luke)
+CREATE (Anakin)-[:child {episode:3}]-&gt;(Luke)
+CREATE (Padmé)-[:child {episode:3}]-&gt;(Luke)
 CREATE (Luke)-[:owns {episode:4}]-&gt;(R2D2)</code></pre>
 </div>
 </figure>
 </div>
-<p>Nun können die Daten mit Cypher-Abfragen ausgewertet werden (<a href="#lst-match" class="quarto-xref">Listing&nbsp;3</a>):</p>
+<p>Nun können die Daten mit Cypher-Abfragen ausgewertet werden (<a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a>):</p>
 <div id="lst-match" class="cypher listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-match-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;3: Abfragen in Cypher-Syntax
+Listing&nbsp;2: Abfragen in Cypher-Syntax
 </figcaption>
 <div aria-describedby="lst-match-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <pre id="lst-match" class="cypher"><code># Wer sind die Eltern der Person mit dem Namen Luke?
-MATCH (p)-[:parent]-&gt;(:person {name:"Luke"}) RETURN p
+MATCH (p)-[:child]-&gt;(:person {name:"Luke"}) RETURN p
 
 # Wie heißen die Besitzer von R2D2 ab Episode 2?
 MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</code></pre>
@@ -275,39 +292,189 @@ MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</co
 </div>
 <p>Wie bei allen Datenbanken können die Abfrageergebnisse natürlich nur so gut sein wie die Datenbasis: so würde eine Frage nach den Kindern von Anakin nur Luke ergeben, weil seine Zwillingsschwester Leia im Beispiel-Graph fehlt. Grundsätzlich stellt die Modellierung von Property-Graphen aber ein leistungsfähiges und flexibels Werkzeug vor allem für semi-strukturierte und verknüpfte Daten da. Im Projekt NFDI4Objects haben wir uns deshalb dazu entschieden die Zusammenführung heterogener Daten aus verschiedenene Quellen in einem Property-Graphen durchzuführen.</p>
 </section>
+<section id="property-graph-exchange-format" class="level2">
+<h2 class="anchored" data-anchor-id="property-graph-exchange-format">Property Graph Exchange Format</h2>
+<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das Property Graph Exchange Format <span class="citation" data-cites="pgspec">(<a href="#ref-pgspec" role="doc-biblioref">Chiba 2024</a>)</span>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im <strong>PG-Format</strong>.</p>
+<div id="lst-pg" class="pg listing quarto-float">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;3: Beispiel-Graph im PG Format
+</figcaption>
+<div aria-describedby="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="lst-pg" class="pg"><code># Knoten mit Knoten-Typ (Label) und Eigenschaften
+Padmé  :person  gender:female
+Anakin :person  gender:male                 
+Luke   :person  gender:male                 
+R2D2   :robot              
+   
+# Kanten mit Kanten-Typ (Label) und Eigenschaften
+Padmé  -&gt; R2D2   :owns      episode:1
+Padmé  -- Anakin :marriage  episode:2
+Anakin -&gt; R2D2   :owns      episode:2    
+Anakin -&gt; Luke   :child     episode:3
+Padmé  -&gt; Luke   :child     episode:3 
+Luke   -&gt; R2D2   :owns      episode:4</code></pre>
+</div>
+</figure>
+</div>
+<p>Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL) und wird durch die Implementierung der Programmbibliothek <a href="https://www.npmjs.com/package/pgraphs">pgraphs</a> zur Konvertierung zwischen verschiedenen Graph-Formaten und Datenbanksystemen begleitet. So wurde der Beispielgraph in Neo4J in <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> automatisch mit dem Aufruf <code>pgraph -t cypher -i name star-wars.pg</code> aus <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> erzeugt.</p>
+</section>
 <section id="vergleich-mit-rdf" class="level2">
 <h2 class="anchored" data-anchor-id="vergleich-mit-rdf">Vergleich mit RDF</h2>
-<p>Zu den Graphdatenbanken gehören neben Property Graphen auch die RDF-Datenbanken, in denen Daten nach dem RDF-Datenmodell gespeichert werden können.</p>
-<ul>
-<li>Triples</li>
-<li>Können integriert werden</li>
-<li>Benötigen Ontologien</li>
-</ul>
-<p>Vor- und Nachteile von Property Graphen im Vergleich zu RDF:</p>
-<ul>
-<li>Flexibler: keine Ontologien notwendig</li>
-<li>Abfragesprache Cypher etwas einfacher als SPARQL</li>
-<li>Nicht so einfach mit externen Daten integriertbar</li>
-</ul>
-<p>Fazit: Beides hat seinen Einsatzzweck.</p>
+<p>Zu den Graphdatenbanken gehören auch die so genannten <strong>Triple-Stores</strong>, in denen Daten dem RDF-Datenmodell nach gespeichert werden. Da RDF und die damit verbundenen Konzepte von Linked Data und Semantic bereits seit Jahrzehnten propagiert werden, ist die Frage berechtigt, ob nicht mal wieder mit Property-Graphen als neuem Trend das Rad neu erfunden wird. Tatsächlich sind RDF und Property Graphen aus unterschiedlicher Motivation heraus entstanden und haben daher verschiedene Schwerpunkte und Einsatzzwecke.</p>
+<p>RDF ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen von Daten. Grundstein bilden dabei die übergreifend nutzbaren URIs zur weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht es dagegen primär um die effiziente Speicherung und Auswertung von vernetzen Daten in einer abgeschlossenen Datenbank.</p>
+<p>Rein formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten als “Ressourcen” und Kanten als “Triples” bezeichnet werden. Eine Entsprechung zu Eigenschaften gibt es in aber RDF nicht, Knoten haben keine Knoten-Label und Kanten-Label werden “Properties” genannt. Die Rolle der fehlenden Knoten-Label und Knoten-Eigenschaften übernehmen in RDF zusätzliche Kanten (die sich allerdings nicht von “normalen” Kanten unterscheiden lassen). <a href="#lst-ttl" class="quarto-xref">Listing&nbsp;4</a> zeigt den Beispiel-Graphen in RDF-Turtle-Syntax und <a href="#lst-sparql" class="quarto-xref">Listing&nbsp;5</a> die Entsprechung der ersten Cypher-Abfrage aus <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a> in der RDF-eigenen Abfragesprache SPARQL. Obwohl der RDF-Graph (<a href="#fig-rdf-image" class="quarto-xref">Abbildung&nbsp;2</a>) weniger Informationen enthält ist er im Vergleich zu <a href="#fig-image" class="quarto-xref">Abbildung&nbsp;1</a> etwas unübersichtlicher.</p>
+<div id="lst-ttl" class="ttlr listing quarto-float">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-ttl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;4: Beispiel-Graph in RDF/Turtle (ohne Kanten-Eigenschaften)
+</figcaption>
+<div aria-describedby="lst-ttl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="lst-ttl" class="ttlr"><code>&lt;Padmé&gt;  a &lt;person&gt; ; &lt;gender&gt; "female" .
+&lt;Anakin&gt; a &lt;person&gt; ; &lt;gender&gt; "male" .
+&lt;Luke&gt;   a &lt;person&gt; ; &lt;gender&gt; "male" .
+&lt;R2D2&gt;   a &lt;robot&gt; .
+
+&lt;Padmé&gt;  &lt;owns&gt; &lt;R2D2&gt; .
+&lt;Anakin&gt; &lt;owns&gt; &lt;R2D2&gt; .
+&lt;Anakin&gt; &lt;child&gt; &lt;Luke&gt; .
+&lt;Padmé&gt; &lt;child&gt; &lt;Luke&gt; .
+&lt;Luke&gt;  &lt;owns&gt; &lt;R2D2&gt; .</code></pre>
+</div>
+</figure>
+</div>
+<div id="lst-sparql" class="sparql listing quarto-float">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-sparql-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;5: SPARQL-Abfrage
+</figcaption>
+<div aria-describedby="lst-sparql-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="lst-sparql" class="sparql"><code># Wer sind die Eltern der Person Luke?
+SELECT ?p { ?p &lt;child&gt; &lt;Luke&gt; . &lt;Luke&gt; a &lt;person&gt; }</code></pre>
+</div>
+</figure>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-rdf-image" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rdf-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-rdf-image">flowchart LR
+   male([male])
+   female([female])
+   Padmé -- a --&gt; person
+   Anakin -- a --&gt; person
+   R2D2 -- a --&gt; robot 
+   Padmé -- owns --&gt; R2D2
+   Anakin -- owns --&gt; R2D2
+   Anakin -- child --&gt; Luke
+   Padmé -- child --&gt; Luke
+   Padmé -- gender --&gt; female
+   Luke -- gender --&gt; male
+   Anakin -- gender --&gt; male
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rdf-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;2: Visualisierung des Beispiel-Graphen in RDF
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+<p>Unter dem Namen RDF 1.2 (auch RDF-star) wird derzeit eine Erweiterung von standardisiert, mit der RDF-Triple mit weiteren Tripeln angereichtert werden können, so dass auch eine Ensprechung zu Kanten-Eigenschaften möglich wäre (<a href="#lst-ttl2" class="quarto-xref">Listing&nbsp;6</a>). So wäre dann auch die zweite Beispielabfrage in RDF möglich (<a href="#lst-sparql2" class="quarto-xref">Listing&nbsp;7</a>). Abgesehen von der noch fehlenden Unterstützung in mehreren RDF-Werkzeugen werden die Daten mit dieser Erweiterung allerdings leicht noch unübersichtlicher.</p>
+<div id="lst-ttl2" class="ttlr listing quarto-float">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-ttl2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;6: Kanten des Beispiel-Graph in RDF/Turtle 1.2
+</figcaption>
+<div aria-describedby="lst-ttl2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="lst-ttl2" class="ttlr"><code>&lt;Padmé&gt;  &lt;owns&gt; &lt;R2D2&gt;   {| &lt;episode&gt; 1 |} .
+&lt;Anakin&gt; &lt;owns&gt; &lt;R2D2&gt;   {| &lt;episode&gt; 2 |} .   
+&lt;Anakin&gt; &lt;parent&gt; &lt;Luke&gt; {| &lt;episode&gt; 3 |} .
+&lt;Padmé&gt; &lt;parent&gt; &lt;Luke&gt;  {| &lt;episode&gt; 3 |} .
+&lt;Luke&gt;  &lt;owns&gt; &lt;R2D2&gt;    {| &lt;episode&gt; 4 |} .</code></pre>
+</div>
+</figure>
+</div>
+<div id="lst-sparql2" class="sparql listing quarto-float">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-sparql2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;7: SPARQL 1.2 Abfrage
+</figcaption>
+<div aria-describedby="lst-sparql2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="lst-sparql2" class="sparql"><code># Wer sind die Besitzer von R2D2 ab Episode 2?
+SELECT ?p {  
+  BIND( &lt;&lt; ?p &lt;owns&gt; &lt;R2D2&gt; &gt;&gt; AS ?e )
+  FILTER ( e.episode &gt;= 2 )
+}</code></pre>
+</div>
+</figure>
+</div>
+<p>Die wesentlichen Unterschiede von RDF und Property-Graphen sind in <a href="#tbl-rdf-pg" class="quarto-xref">Tabelle&nbsp;1</a> zusammengefasst. Grundsätzlich lässt sich feststellen, dass RDF vor allem für die Zusammenführung von Daten aus unterschiedlichen Quellen sinnvoll ist. RDF-Modelle werden daher tendenziell eher projektübergreifend und nachnutzbar angelegt werden. Dieser Vorteil birgt in der Praxis allerdings die auch die Gefahr von langwierigen Prozessen und theoretischen, komplexeren Lösungen, die möglichwerweise an der Praxis vorbeigehen.</p>
+<div id="tbl-rdf-pg" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rdf-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabelle&nbsp;1: RDF und Property-Graphen im Vergleich
+</figcaption>
+<div aria-describedby="tbl-rdf-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<colgroup>
+<col style="width: 47%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>RDF</th>
+<th>Property Graphen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Graph aus Knoten und Kanten</td>
+<td>Graph aus Knoten, Kanten und Eigenschaften</td>
+</tr>
+<tr class="even">
+<td>Etabliert durch das W3C</td>
+<td>Standardisierung noch nicht abgeschlossen</td>
+</tr>
+<tr class="odd">
+<td>Identifier sind globale URIs</td>
+<td>Interne oder lokale Knoten-Identifier</td>
+</tr>
+<tr class="even">
+<td>Globale Ontologien mit Regeln</td>
+<td>Interne oder lokale Datenbank-Schemas</td>
+</tr>
+<tr class="odd">
+<td>Abfragesprache SPARQL</td>
+<td>Abfragesprache Cypher</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
 <section id="property-graphen-an-der-vzg" class="level2">
 <h2 class="anchored" data-anchor-id="property-graphen-an-der-vzg">Property Graphen an der VZG</h2>
-<ul>
-<li>NFDI4Objects</li>
-<li>PG format</li>
-<li>pgraphs: Werkzeug zur Konvertierun</li>
-</ul>
+<p>An der VZG werden Property-Graphen vor allem im Projekt NFDI4Objects eingesetzt. Darüber hinaus sollen auch Sacherschließungsdaten des K10plus für Analysen in einer Graphdatenbank indexiert werden. In beiden Fällen ist das Ergebnis ein so genannter Knowledge Graph. Für die Integration mit anderen Datenquellen sollen beide Knowledge Graphen auch nach RDF konvertiert werden und bestehende RDF-Daten durch Konvertierung in das PG-Format in Teilen in die Property-Graphen integriert werden.</p>
 </section>
 <section id="zusammenfassung" class="level2">
 <h2 class="anchored" data-anchor-id="zusammenfassung">Zusammenfassung</h2>
+<p><em>muss noch ausformuliert werden</em></p>
 <ul>
-<li>Flexibler als RDF</li>
-<li>Standardisierung in SQL. Bisher Oracle</li>
-<li>Abfragesprache Cypher</li>
+<li><p>Property-Graphen: flexibel aber dennoch nicht zu kompliziertes Werkzeug zur Strukturierung und Speicherung von Daten</p></li>
+<li><p>Standardisierung noch nicht abgeschlossen aber ausreichend</p></li>
+<li><p>Im Gegensatz zu RDF nicht aus Austauschformat gedacht</p></li>
+<li><p>PG und RDF lassen sich zumindest einfacher aufeinander abbilden als Formate in hierarchischen oder feldbasierten Formaten wie MARC, PICA, XML.</p></li>
+<li><p>Bei Interesse bitte mich ansprechen!</p></li>
 </ul>
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Abbildung&nbsp;1: </span>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-pgspec" class="csl-entry" role="listitem">
+Chiba, Voß, Hirokazu. 2024. <span>„Property Graph Exchange Format“</span>. <a href="https://github.com/pg-format/specification">https://github.com/pg-format/specification</a>.
+</div>
 </div>
 </section>
      </main>
@@ -719,30 +886,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
-    }
-  });
-
-};
-          </script> 
+</script>  </div> <!-- /content --> 
   
 </body></html>

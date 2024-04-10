@@ -1,0 +1,292 @@
+---
+title: "Property-Graphen: eine kurze Einführung"
+lang: de
+authors:
+  - name: Jakob Voß
+    affiliation: Verbundzentrale des GBV (VZG)
+bibliography: references.bib
+---
+
+*VORLÄUFIGER ARTIKEL-ENTWURF*
+
+Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch
+das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass
+ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt
+NFDI4Objects, verstärkt mit so genannten **Property-Graphen** zur
+Strukturierung und Verarbeitung von (Meta)daten beschäftige. 
+
+Property-Graphen (oft auch als Labeled Property Graphen bezeichnet) bilden ein
+Datenbankmodell, das unter die so genannten NoSQL-Datenbanken und noch
+spezieller unter die Graphdatenbanken fällt. Hierbei werden Daten nicht wie bei
+SQL in Form von Tabellen sondern in Form von Graphen aus Knoten gespeichert,
+die durch Kanten miteinander verbunden sind. Eine Besonderheit von
+Property-Graphen ist, dass sowohl Knoten als auch Kanten jeweils ein oder
+mehrere Labels haben und mit Eigenschaften versehen werden können.
+
+## Beispiel
+
+Zur Veranschaulichung soll folgende Sammlung einiger Charaktere, Beziehungen
+und Eigenschaften aus dem Star-Wars-Universum dienen: Padmé, Anakin und Luke
+sind Personen unterschiedlichen Geschlechts und R2D2 ist ein Roboter. In
+Episode 1 gehört R2D2 zu Padmé, die ihn in Episode 2 Anakin zu ihrer
+gemeinsamen Hochzeit schenkt, und in Episode 4 gelangt der Roboter zu Luke,
+der in Episode 3 als Kind von Padmé und Anakin geboren wurde.
+
+Diese Informationen lassen sich in einem Property-Graphen mit Charakteren als
+Knoten und ihren Beziehungen als Kanten modellieren. @fig-image zeigt eine
+mögliche Visualisierung dieses Graphen. Darin sind Knoten-Identifier fett
+hervorgehoben, Labels kursiv und Eigenschaften in Festbreitenschriftart. Bis
+auf die Beziehung zwischen Padmé und Anakin sind alle Kanten gerichtet.
+
+```{mermaid}
+%%| label: fig-image
+%%| fig-cap: Visualisierung des Beispiel-Graphen
+flowchart LR
+   Padme["<b>Padmé</b><br><i>person</i><br><tt>gender:female</tt>"]
+   Anakin["<b>Anakin</b><br><i>person</i><br><tt>gender:male</tt>"]              
+   Luke["<b>Luke</b><br><i>person</i><br><tt>gender:male</tt>"]
+   R2D2["<b>R2D2</b><br><i>robot</i>"]
+   Padme -- "<i>owns</i><br><tt>episode:1</tt>" --> R2D2
+   Padme -- "<i>marriage<i><br><tt>episode:2</tt>" --- Anakin
+   Anakin -- "<i>owns</i><br><tt>episode:2</tt>" --> R2D2
+   Anakin -- "<i>child</i><br><tt>episode:3</tt>" --> Luke
+   Padme -- "<i>child</i><br><tt>episode:3</tt>" --> Luke      
+   Luke -- "<i>owns</i><br><tt>episode:4</tt>" --> R2D2
+```
+
+Mit Knoten, gerichteten und ungerichteten Kanten, Labels und Eigenschaften sind
+schon alle Elemente von Property-Graphen aufgezählt. Zur Kodierung dieser
+Graphen gibt es allerdings viele verschiedene Datenormate und Datenbanksysteme, die
+sich in Details wie den erlaubten Zeichen in Identifiern, der
+Wiederholbarkeit von Labels und Eigenschaften und in den möglichen Datentypen
+von Eigenschaftswerten (im Beispiel Zeichenkette für die Eigenschaft `gender`
+und Zahl für die Eigenschaft `episode`) unterscheiden. Im Folgenden werden zwei
+mögliche Kodierungen für Property-Graphen vorgestellt und anschließend auf
+Gemeinsamkeiten und Unterschiede zum RDF-Format eingegangen.
+
+
+## Property-Graph-Datenbanken
+
+[Neo4J]: https://neo4j.com/
+[Kùzu]: https://kuzudb.com/
+[Memgraph]: https://memgraph.com/
+[FalkorDB]: https://www.falkordb.com/
+[Vendor Lock-In]: https://it-in-bibliotheken.de/management.html#vendor-lock-in
+[Cypher]: https://opencypher.org/
+
+Etabliert wurden Property-Graphen insbesondere durch das
+Datenbankmanagementsystem (DBMS) [Neo4J]. Die Open-Source-Software war lange
+Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache
+**Cypher** (siehe @lst-cypher und @lst-match), die inzwischen auch von anderen
+Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS [Kùzu],
+[Memgraph] und [FalkorDB], so dass wie bei Relationalen DBMS (RDBMS) die Gefahr
+für [Vendor Lock-In] gering ist. Im letzten Update des SQL-Standard (SQL:2023)
+wurde zumdem unter dem Namen SQL/PGQ eine Teilmenge von Cypher als
+Abfragesprache für Property-Graphen in SQL-Datenbanken definiert. Es ist also
+davon auszugehen, dass in Zukunft weitere DBMS Property-Graphen und Cypher
+unterstützen.
+
+Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit
+folgenden Cypher-Statements angelegt werden (@lst-cypher). Da Knoten-Identifier
+in der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft
+`name` angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist
+die Beziehung zwischen Padmé und Anakin weggelassen.
+
+```{#lst-cypher .cypher lst-cap="Beispiel-Graph mit Cypher-Statements"}
+CREATE (Anakin:person {gender:"male", name:"Anakin"})
+CREATE (Luke:person {gender:"male", name:"Luke"})
+CREATE (Padmé:person {gender:"female", name:"Padmé"})
+CREATE (R2D2:robot {name:"R2D2"})
+CREATE (Padmé)-[:owns {episode:1}]->(R2D2)
+CREATE (Anakin)-[:owns {episode:2}]->(R2D2)
+CREATE (Anakin)-[:child {episode:3}]->(Luke)
+CREATE (Padmé)-[:child {episode:3}]->(Luke)
+CREATE (Luke)-[:owns {episode:4}]->(R2D2)
+```
+
+Nun können die Daten mit Cypher-Abfragen ausgewertet werden (@lst-match):
+
+```{#lst-match .cypher lst-cap="Abfragen in Cypher-Syntax"}
+# Wer sind die Eltern der Person mit dem Namen Luke?
+MATCH (p)-[:child]->(:person {name:"Luke"}) RETURN p
+
+# Wie heißen die Besitzer von R2D2 ab Episode 2?
+MATCH (p)-[e:owns]->({name:"R2D2"}) WHERE e.episode >= 2 RETURN p.name
+```
+
+Wie bei allen Datenbanken können die Abfrageergebnisse natürlich nur so gut
+sein wie die Datenbasis: so würde eine Frage nach den Kindern von Anakin nur
+Luke ergeben, weil seine Zwillingsschwester Leia im Beispiel-Graph fehlt.
+Grundsätzlich stellt die Modellierung von Property-Graphen aber ein
+leistungsfähiges und flexibels Werkzeug vor allem für semi-strukturierte und
+verknüpfte Daten da. Im Projekt NFDI4Objects haben wir uns deshalb dazu
+entschieden die Zusammenführung heterogener Daten aus verschiedenene Quellen in
+einem Property-Graphen durchzuführen.
+
+
+## Property Graph Exchange Format
+
+Während die Standardisierung der Datenbanksprache Cypher relativ weit
+fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch
+von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota
+Yamanaka und Shota Matsumoto entwickele ich deshalb das Property Graph Exchange
+Format [@pgspec]. @lst-pg zeigt die Kodierung des vollständigen
+Beispiel-Graphen im **PG-Format**.
+
+```{#lst-pg .pg lst-cap="Beispiel-Graph im PG Format"}
+# Knoten mit Knoten-Typ (Label) und Eigenschaften
+Padmé  :person  gender:female
+Anakin :person  gender:male                 
+Luke   :person  gender:male                 
+R2D2   :robot              
+   
+# Kanten mit Kanten-Typ (Label) und Eigenschaften
+Padmé  -> R2D2   :owns      episode:1
+Padmé  -- Anakin :marriage  episode:2
+Anakin -> R2D2   :owns      episode:2    
+Anakin -> Luke   :child     episode:3
+Padmé  -> Luke   :child     episode:3 
+Luke   -> R2D2   :owns      episode:4
+```
+
+Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und
+PG-JSONL) und wird durch die Implementierung der Programmbibliothek
+[pgraphs](https://www.npmjs.com/package/pgraphs) zur Konvertierung zwischen
+verschiedenen Graph-Formaten und Datenbanksystemen begleitet. So wurde der
+Beispielgraph in Neo4J in @lst-cypher automatisch mit dem Aufruf 
+`pgraph -t cypher -i name star-wars.pg` aus @lst-pg erzeugt.
+
+
+## Vergleich mit RDF
+
+Zu den Graphdatenbanken gehören auch die so genannten **Triple-Stores**, in
+denen Daten dem RDF-Datenmodell nach gespeichert werden.  Da RDF und die damit
+verbundenen Konzepte von Linked Data und Semantic bereits seit Jahrzehnten
+propagiert werden, ist die Frage berechtigt, ob nicht mal wieder mit
+Property-Graphen als neuem Trend das Rad neu erfunden wird. Tatsächlich sind
+RDF und Property Graphen aus unterschiedlicher Motivation heraus entstanden und
+haben daher verschiedene Schwerpunkte und Einsatzzwecke.
+
+RDF ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen
+von Daten.  Grundstein bilden dabei die übergreifend nutzbaren URIs zur
+weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht
+es dagegen primär um die effiziente Speicherung und Auswertung von vernetzen
+Daten in einer abgeschlossenen Datenbank.
+
+Rein formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei
+Knoten als "Ressourcen" und Kanten als "Triples" bezeichnet werden. Eine
+Entsprechung zu Eigenschaften gibt es in aber RDF nicht, Knoten haben keine
+Knoten-Label und Kanten-Label werden "Properties" genannt. Die Rolle der
+fehlenden Knoten-Label und Knoten-Eigenschaften übernehmen in RDF zusätzliche
+Kanten (die sich allerdings nicht von "normalen" Kanten unterscheiden lassen).
+@lst-ttl zeigt den Beispiel-Graphen in RDF-Turtle-Syntax und @lst-sparql die
+Entsprechung der ersten Cypher-Abfrage aus @lst-match in der RDF-eigenen
+Abfragesprache SPARQL. Obwohl der RDF-Graph (@fig-rdf-image) weniger
+Informationen enthält ist er im Vergleich zu @fig-image etwas unübersichtlicher. 
+
+
+```{#lst-ttl .ttlr lst-cap="Beispiel-Graph in RDF/Turtle (ohne Kanten-Eigenschaften)"}
+<Padmé>  a <person> ; <gender> "female" .
+<Anakin> a <person> ; <gender> "male" .
+<Luke>   a <person> ; <gender> "male" .
+<R2D2>   a <robot> .
+
+<Padmé>  <owns> <R2D2> .
+<Anakin> <owns> <R2D2> .
+<Anakin> <child> <Luke> .
+<Padmé> <child> <Luke> .
+<Luke>  <owns> <R2D2> .
+```
+
+```{#lst-sparql .sparql lst-cap="SPARQL-Abfrage"}
+# Wer sind die Eltern der Person Luke?
+SELECT ?p { ?p <child> <Luke> . <Luke> a <person> }
+```
+
+```{mermaid}
+%%| label: fig-rdf-image
+%%| fig-cap: Visualisierung des Beispiel-Graphen in RDF
+flowchart LR
+   male([male])
+   female([female])
+   Padmé -- a --> person
+   Anakin -- a --> person
+   R2D2 -- a --> robot 
+   Padmé -- owns --> R2D2
+   Anakin -- owns --> R2D2
+   Anakin -- child --> Luke
+   Padmé -- child --> Luke
+   Padmé -- gender --> female
+   Luke -- gender --> male
+   Anakin -- gender --> male
+```
+
+Unter dem Namen RDF 1.2 (auch RDF-star) wird derzeit eine Erweiterung von
+standardisiert, mit der RDF-Triple mit weiteren Tripeln angereichtert werden
+können, so dass auch eine Ensprechung zu Kanten-Eigenschaften möglich wäre
+(@lst-ttl2). So wäre dann auch die zweite Beispielabfrage in RDF möglich
+(@lst-sparql2). Abgesehen von der noch fehlenden Unterstützung in mehreren
+RDF-Werkzeugen werden die Daten mit dieser Erweiterung allerdings leicht noch
+unübersichtlicher.
+
+```{#lst-ttl2 .ttlr lst-cap="Kanten des Beispiel-Graph in RDF/Turtle 1.2"}
+<Padmé>  <owns> <R2D2>   {| <episode> 1 |} .
+<Anakin> <owns> <R2D2>   {| <episode> 2 |} .   
+<Anakin> <parent> <Luke> {| <episode> 3 |} .
+<Padmé> <parent> <Luke>  {| <episode> 3 |} .
+<Luke>  <owns> <R2D2>    {| <episode> 4 |} .
+```
+
+```{#lst-sparql2 .sparql lst-cap="SPARQL 1.2 Abfrage"}
+# Wer sind die Besitzer von R2D2 ab Episode 2?
+SELECT ?p {  
+  BIND( << ?p <owns> <R2D2> >> AS ?e )
+  FILTER ( e.episode >= 2 )
+}
+```
+
+Die wesentlichen Unterschiede von RDF und Property-Graphen sind in @tbl-rdf-pg
+zusammengefasst. Grundsätzlich lässt sich feststellen, dass RDF vor allem für
+die Zusammenführung von Daten aus unterschiedlichen Quellen sinnvoll ist.
+RDF-Modelle werden daher tendenziell eher projektübergreifend und nachnutzbar
+angelegt werden. Dieser Vorteil birgt in der Praxis allerdings die auch die
+Gefahr von langwierigen Prozessen und theoretischen, komplexeren Lösungen, die
+möglichwerweise an der Praxis vorbeigehen.
+
+ RDF            | Property Graphen 
+----------------|------------------
+Graph aus Knoten und Kanten   | Graph aus Knoten, Kanten und Eigenschaften
+Etabliert durch das W3C       | Standardisierung noch nicht abgeschlossen
+Identifier sind globale URIs  | Interne oder lokale Knoten-Identifier
+Globale Ontologien mit Regeln | Interne oder lokale Datenbank-Schemas
+Abfragesprache SPARQL         | Abfragesprache Cypher
+
+: RDF und Property-Graphen im Vergleich {#tbl-rdf-pg}
+
+
+## Property Graphen an der VZG
+
+An der VZG werden Property-Graphen vor allem im Projekt NFDI4Objects
+eingesetzt. Darüber hinaus sollen auch Sacherschließungsdaten des K10plus für
+Analysen in einer Graphdatenbank indexiert werden. In beiden Fällen ist das
+Ergebnis ein so genannter Knowledge Graph. Für die Integration mit anderen
+Datenquellen sollen beide Knowledge Graphen auch nach RDF konvertiert werden
+und bestehende RDF-Daten durch Konvertierung in das PG-Format in Teilen in die
+Property-Graphen integriert werden.
+
+## Zusammenfassung
+
+*muss noch ausformuliert werden*
+
+- Property-Graphen: flexibel aber dennoch nicht zu kompliziertes
+  Werkzeug zur Strukturierung und Speicherung von Daten
+
+- Standardisierung noch nicht abgeschlossen aber ausreichend
+
+- Im Gegensatz zu RDF nicht aus Austauschformat gedacht
+
+- PG und RDF lassen sich zumindest einfacher aufeinander abbilden als Formate
+  in hierarchischen oder feldbasierten Formaten wie MARC, PICA, XML.
+
+- Bei Interesse bitte mich ansprechen!
+
