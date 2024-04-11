@@ -5,4 +5,6 @@ project:
     - "!*.md"
 manuscript:
   article: index.qmd
-
+format:
+  html: default
+  docx: default

@@ -217,9 +217,8 @@
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-       <p><em>VORLÄUFIGER ARTIKEL-ENTWURF</em></p>
-<p>Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt NFDI4Objects, verstärkt mit so genannten <strong>Property-Graphen</strong> zur Strukturierung und Verarbeitung von (Meta)daten beschäftige.</p>
-<p>Property-Graphen (oft auch als Labeled Property Graphen bezeichnet) bilden ein Datenbankmodell, das unter die so genannten NoSQL-Datenbanken und noch spezieller unter die Graphdatenbanken fällt. Hierbei werden Daten nicht wie bei SQL in Form von Tabellen sondern in Form von Graphen aus Knoten gespeichert, die durch Kanten miteinander verbunden sind. Eine Besonderheit von Property-Graphen ist, dass sowohl Knoten als auch Kanten jeweils ein oder mehrere Labels haben und mit Eigenschaften versehen werden können.</p>
+       <p>Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt NFDI4Objects, verstärkt mit so genannten Property-Graphen zur Strukturierung und Verarbeitung von (Meta)daten beschäftige.</p>
+<p>Property-Graphen (oft auch <em>Labeled Property Graphen</em>) fallen als Datenbankmodell unter die so genannten NoSQL-Datenbanken und noch spezieller unter die Graphdatenbanken. Hierbei werden Daten nicht wie bei SQL in Form von Tabellen sondern in Form von Graphen aus <em>Knoten</em> gespeichert, die durch <em>Kanten</em> miteinander verbunden sind. Eine Besonderheit von Property-Graphen ist, dass sowohl Knoten als auch Kanten jeweils ein oder mehrere <em>Labels</em> haben und mit <em>Eigenschaften</em> versehen werden können.</p>
 <section id="beispiel" class="level2">
 <h2 class="anchored" data-anchor-id="beispiel">Beispiel</h2>
 <p>Zur Veranschaulichung soll folgende Sammlung einiger Charaktere, Beziehungen und Eigenschaften aus dem Star-Wars-Universum dienen: Padmé, Anakin und Luke sind Personen unterschiedlichen Geschlechts und R2D2 ist ein Roboter. In Episode 1 gehört R2D2 zu Padmé, die ihn in Episode 2 Anakin zu ihrer gemeinsamen Hochzeit schenkt, und in Episode 4 gelangt der Roboter zu Luke, der in Episode 3 als Kind von Padmé und Anakin geboren wurde.</p>
@@ -251,12 +250,12 @@ Abbildung&nbsp;1: Visualisierung des Beispiel-Graphen
 </div>
 </div>
 </div></div>
-<p>Mit Knoten, gerichteten und ungerichteten Kanten, Labels und Eigenschaften sind schon alle Elemente von Property-Graphen aufgezählt. Zur Kodierung dieser Graphen gibt es allerdings viele verschiedene Datenormate und Datenbanksysteme, die sich in Details wie den erlaubten Zeichen in Identifiern, der Wiederholbarkeit von Labels und Eigenschaften und in den möglichen Datentypen von Eigenschaftswerten (im Beispiel Zeichenkette für die Eigenschaft <code>gender</code> und Zahl für die Eigenschaft <code>episode</code>) unterscheiden. Im Folgenden werden zwei mögliche Kodierungen für Property-Graphen vorgestellt und anschließend auf Gemeinsamkeiten und Unterschiede zum RDF-Format eingegangen.</p>
+<p>Zur Kodierung von Property-Graphen gibt es verschiedene Datenformate und Datenbanksysteme, die sich in Details wie den erlaubten Zeichen in Identifiern, der Wiederholbarkeit von Labels und Eigenschaften und in möglichen Datentypen von Eigenschaftswerten (im Beispiel Zeichenkette für die Eigenschaft <code>gender</code> und Zahl für die Eigenschaft <code>episode</code>) unterscheiden. Im Folgenden werden zwei mögliche Kodierungen vorgestellt und Gemeinsamkeiten und Unterschiede zum RDF-Format erklärt.</p>
 </section>
 <section id="property-graph-datenbanken" class="level2">
 <h2 class="anchored" data-anchor-id="property-graph-datenbanken">Property-Graph-Datenbanken</h2>
-<p>Etabliert wurden Property-Graphen insbesondere durch das Datenbankmanagementsystem (DBMS) <a href="https://neo4j.com/">Neo4J</a>. Die Open-Source-Software war lange Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache <strong>Cypher</strong> (siehe <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> und <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a>), die inzwischen auch von anderen Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS <a href="https://kuzudb.com/">Kùzu</a>, <a href="https://memgraph.com/">Memgraph</a> und <a href="https://www.falkordb.com/">FalkorDB</a>, so dass wie bei Relationalen DBMS (RDBMS) die Gefahr für <a href="https://it-in-bibliotheken.de/management.html#vendor-lock-in">Vendor Lock-In</a> gering ist. Im letzten Update des SQL-Standard (SQL:2023) wurde zumdem unter dem Namen SQL/PGQ eine Teilmenge von Cypher als Abfragesprache für Property-Graphen in SQL-Datenbanken definiert. Es ist also davon auszugehen, dass in Zukunft weitere DBMS Property-Graphen und Cypher unterstützen.</p>
-<p>Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit folgenden Cypher-Statements angelegt werden (<a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a>). Da Knoten-Identifier in der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft <code>name</code> angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist die Beziehung zwischen Padmé und Anakin weggelassen.</p>
+<p>Etabliert wurden Property-Graphen insbesondere durch das Datenbankmanagementsystem (DBMS) <a href="https://neo4j.com/">Neo4J</a>. Die Open-Source-Software war lange Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache <em>Cypher</em> (siehe <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> und <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a>), die inzwischen auch von anderen Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS <a href="https://kuzudb.com/">Kùzu</a>, <a href="https://memgraph.com/">Memgraph</a> und <a href="https://www.falkordb.com/">FalkorDB</a>. Im letzten Update des SQL-Standard (SQL:2023) wurde zumdem unter dem Namen SQL/PGQ eine Erweiterung für Property-Graphen in SQL-Datenbanken definiert. Es ist also davon auszugehen, dass in Zukunft weitere DBMS Property-Graphen unterstützen.</p>
+<p>Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit den Cypher-Statements in <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> angelegt werden. Da Knoten-Identifier in der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft <code>name</code> angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist die Beziehung zwischen Padmé und Anakin weggelassen.</p>
 <div id="lst-cypher" class="cypher listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-cypher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -290,11 +289,11 @@ MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</co
 </div>
 </figure>
 </div>
-<p>Wie bei allen Datenbanken können die Abfrageergebnisse natürlich nur so gut sein wie die Datenbasis: so würde eine Frage nach den Kindern von Anakin nur Luke ergeben, weil seine Zwillingsschwester Leia im Beispiel-Graph fehlt. Grundsätzlich stellt die Modellierung von Property-Graphen aber ein leistungsfähiges und flexibels Werkzeug vor allem für semi-strukturierte und verknüpfte Daten da. Im Projekt NFDI4Objects haben wir uns deshalb dazu entschieden die Zusammenführung heterogener Daten aus verschiedenene Quellen in einem Property-Graphen durchzuführen.</p>
+<p>Wie bei allen Datenbanken können die Abfrageergebnisse natürlich nur so gut sein wie die Datenbasis: so würde eine Frage nach den Kindern von Anakin nur Luke ergeben, weil seine Zwillingsschwester Leia im Beispiel-Graph fehlt. Grundsätzlich stellt die Modellierung von Property-Graphen aber ein leistungsfähiges und flexibels Werkzeug vor allem für semi-strukturierte und verknüpfte Daten da.</p>
 </section>
 <section id="property-graph-exchange-format" class="level2">
 <h2 class="anchored" data-anchor-id="property-graph-exchange-format">Property Graph Exchange Format</h2>
-<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das Property Graph Exchange Format <span class="citation" data-cites="pgspec">(<a href="#ref-pgspec" role="doc-biblioref">Chiba 2024</a>)</span>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im <strong>PG-Format</strong>.</p>
+<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das <em>Property Graph Exchange Format</em> <span class="citation" data-cites="pgspec">(<a href="#ref-pgspec" role="doc-biblioref">Chiba 2024</a>)</span>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL).</p>
 <div id="lst-pg" class="pg listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -317,13 +316,13 @@ Luke   -&gt; R2D2   :owns      episode:4</code></pre>
 </div>
 </figure>
 </div>
-<p>Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL) und wird durch die Implementierung der Programmbibliothek <a href="https://www.npmjs.com/package/pgraphs">pgraphs</a> zur Konvertierung zwischen verschiedenen Graph-Formaten und Datenbanksystemen begleitet. So wurde der Beispielgraph in Neo4J in <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> automatisch mit dem Aufruf <code>pgraph -t cypher -i name star-wars.pg</code> aus <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> erzeugt.</p>
+<p>und wird durch die Implementierung der Programmbibliothek <a href="https://www.npmjs.com/package/pgraphs">pgraphs</a> zur Konvertierung zwischen verschiedenen Graph-Formaten und Datenbanksystemen begleitet. So wurde der Beispielgraph in Neo4J in <a href="#lst-cypher" class="quarto-xref">Listing&nbsp;1</a> automatisch mit dem Aufruf <code>pgraph -t cypher -i name star-wars.pg</code> aus <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> erzeugt.</p>
 </section>
 <section id="vergleich-mit-rdf" class="level2">
 <h2 class="anchored" data-anchor-id="vergleich-mit-rdf">Vergleich mit RDF</h2>
-<p>Zu den Graphdatenbanken gehören auch die so genannten <strong>Triple-Stores</strong>, in denen Daten dem RDF-Datenmodell nach gespeichert werden. Da RDF und die damit verbundenen Konzepte von Linked Data und Semantic bereits seit Jahrzehnten propagiert werden, ist die Frage berechtigt, ob nicht mal wieder mit Property-Graphen als neuem Trend das Rad neu erfunden wird. Tatsächlich sind RDF und Property Graphen aus unterschiedlicher Motivation heraus entstanden und haben daher verschiedene Schwerpunkte und Einsatzzwecke.</p>
-<p>RDF ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen von Daten. Grundstein bilden dabei die übergreifend nutzbaren URIs zur weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht es dagegen primär um die effiziente Speicherung und Auswertung von vernetzen Daten in einer abgeschlossenen Datenbank.</p>
-<p>Rein formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten als “Ressourcen” und Kanten als “Triples” bezeichnet werden. Eine Entsprechung zu Eigenschaften gibt es in aber RDF nicht, Knoten haben keine Knoten-Label und Kanten-Label werden “Properties” genannt. Die Rolle der fehlenden Knoten-Label und Knoten-Eigenschaften übernehmen in RDF zusätzliche Kanten (die sich allerdings nicht von “normalen” Kanten unterscheiden lassen). <a href="#lst-ttl" class="quarto-xref">Listing&nbsp;4</a> zeigt den Beispiel-Graphen in RDF-Turtle-Syntax und <a href="#lst-sparql" class="quarto-xref">Listing&nbsp;5</a> die Entsprechung der ersten Cypher-Abfrage aus <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a> in der RDF-eigenen Abfragesprache SPARQL. Obwohl der RDF-Graph (<a href="#fig-rdf-image" class="quarto-xref">Abbildung&nbsp;2</a>) weniger Informationen enthält ist er im Vergleich zu <a href="#fig-image" class="quarto-xref">Abbildung&nbsp;1</a> etwas unübersichtlicher.</p>
+<p>RDF ist ein alternatives Graph-basiertes Datenmodell, das zusammen mit Konzepte wie Linked Data und Semantic seit Jahrzehnten propagiert wird. Rein formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten als “Ressourcen” und Kanten als “Triples” bezeichnet werden. Kanten-Label heißen in RDF “Properties”, Entsprechungen zu Knoten-Label und Eigenschaften gibt dagegen nicht.</p>
+<p>Abgesehen von formalen Unterschieden, die sich durch Datenkonvertierung weitgehend überbrücken lassen, ist hilfreich die unterschiedliche Motivationen zu verstehen, aus denen RDF und Property Graphen jeweils entstanden sind: RDF ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen von Daten. Grundstein bilden die übergreifend nutzbaren URIs zur weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht es dagegen primär um die effiziente Speicherung und Auswertung von vernetzen Daten in einer abgeschlossenen Datenbank.</p>
+<p>Zum Vergleich zeigt <a href="#lst-ttl" class="quarto-xref">Listing&nbsp;4</a> den Beispiel-Graphen in RDF-Turtle-Syntax und <a href="#lst-sparql" class="quarto-xref">Listing&nbsp;5</a> die Entsprechung der ersten Cypher-Abfrage aus <a href="#lst-match" class="quarto-xref">Listing&nbsp;2</a> in der RDF-eigenen Abfragesprache SPARQL. Die Rolle der Knoten-Label und Knoten-Eigenschaften übernehmen in RDF zusätzliche Kanten. Kanten-Eigenschaften und ungerichteten Kanten sind in diesem Beispiel dagegen weggelassen, weil ihre Entsprechung in RDF etwas komplexer zu modellieren ist. Obwohl der RDF-Graph (<a href="#fig-rdf-image" class="quarto-xref">Abbildung&nbsp;2</a>) weniger Informationen enthält, ist er im Vergleich zu <a href="#fig-image" class="quarto-xref">Abbildung&nbsp;1</a> etwas unübersichtlicher.</p>
 <div id="lst-ttl" class="ttlr listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-ttl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -383,7 +382,7 @@ Abbildung&nbsp;2: Visualisierung des Beispiel-Graphen in RDF
 </div>
 </div>
 </div></div>
-<p>Unter dem Namen RDF 1.2 (auch RDF-star) wird derzeit eine Erweiterung von standardisiert, mit der RDF-Triple mit weiteren Tripeln angereichtert werden können, so dass auch eine Ensprechung zu Kanten-Eigenschaften möglich wäre (<a href="#lst-ttl2" class="quarto-xref">Listing&nbsp;6</a>). So wäre dann auch die zweite Beispielabfrage in RDF möglich (<a href="#lst-sparql2" class="quarto-xref">Listing&nbsp;7</a>). Abgesehen von der noch fehlenden Unterstützung in mehreren RDF-Werkzeugen werden die Daten mit dieser Erweiterung allerdings leicht noch unübersichtlicher.</p>
+<p>Mit der kommenden Version RDF 1.2 (auch <em>RDF-star</em>) können RDF-Triple mit weiteren Tripeln angereichtert werden, so dass ine direkte Entsprechung zu Kanten-Eigenschaften möglich wäre (siehe <a href="#lst-ttl2" class="quarto-xref">Listing&nbsp;6</a> und <a href="#lst-sparql2" class="quarto-xref">Listing&nbsp;7</a>). Abgesehen von der begrenzten Software-Unterstützung werden Daten mit dieser Erweiterung allerdings nicht unbedingt übersichtlicher.</p>
 <div id="lst-ttl2" class="ttlr listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-ttl2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -412,7 +411,7 @@ SELECT ?p {
 </div>
 </figure>
 </div>
-<p>Die wesentlichen Unterschiede von RDF und Property-Graphen sind in <a href="#tbl-rdf-pg" class="quarto-xref">Tabelle&nbsp;1</a> zusammengefasst. Grundsätzlich lässt sich feststellen, dass RDF vor allem für die Zusammenführung von Daten aus unterschiedlichen Quellen sinnvoll ist. RDF-Modelle werden daher tendenziell eher projektübergreifend und nachnutzbar angelegt werden. Dieser Vorteil birgt in der Praxis allerdings die auch die Gefahr von langwierigen Prozessen und theoretischen, komplexeren Lösungen, die möglichwerweise an der Praxis vorbeigehen.</p>
+<p>Die wesentlichen Unterschiede von RDF und Property-Graphen sind in <a href="#tbl-rdf-pg" class="quarto-xref">Tabelle&nbsp;1</a> zusammengefasst. Grundsätzlich ist RDF vor allem für die Zusammenführung von Daten aus unterschiedlichen Quellen sinnvoll. RDF-Daten werden daher tendenziell eher projektübergreifend und nachnutzbar angelegt. Dieser Vorteil birgt in der Praxis allerdings auch die Gefahr von langwierigen Prozessen und theoretischen, komplexeren Lösungen.</p>
 <div id="tbl-rdf-pg" class="quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rdf-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -444,8 +443,8 @@ Tabelle&nbsp;1: RDF und Property-Graphen im Vergleich
 <td>Interne oder lokale Knoten-Identifier</td>
 </tr>
 <tr class="even">
-<td>Globale Ontologien mit Regeln</td>
-<td>Interne oder lokale Datenbank-Schemas</td>
+<td>Globale Ontologien und Regeln</td>
+<td>Lokale Datenbank-Schemas</td>
 </tr>
 <tr class="odd">
 <td>Abfragesprache SPARQL</td>
@@ -459,18 +458,11 @@ Tabelle&nbsp;1: RDF und Property-Graphen im Vergleich
 </section>
 <section id="property-graphen-an-der-vzg" class="level2">
 <h2 class="anchored" data-anchor-id="property-graphen-an-der-vzg">Property Graphen an der VZG</h2>
-<p>An der VZG werden Property-Graphen vor allem im Projekt NFDI4Objects eingesetzt. Darüber hinaus sollen auch Sacherschließungsdaten des K10plus für Analysen in einer Graphdatenbank indexiert werden. In beiden Fällen ist das Ergebnis ein so genannter Knowledge Graph. Für die Integration mit anderen Datenquellen sollen beide Knowledge Graphen auch nach RDF konvertiert werden und bestehende RDF-Daten durch Konvertierung in das PG-Format in Teilen in die Property-Graphen integriert werden.</p>
+<p>An der VZG werden Property-Graphen vor allem im Projekt <a href="https://www.nfdi4objects.net/">NFDI4Objects</a> eingesetzt. Darüber hinaus sollen Sacherschließungsdaten des K10plus für Analysen in einer Graphdatenbank indexiert werden. In beiden Fällen ist das Ergebnis ein so genannter <em>Knowledge Graph</em>. Für die Integration mit anderen Datenquellen sollen beide Knowledge Graphen auch in RDF bereitgestellt und RDF-Daten durch Konvertierung in das PG-Format mit Property-Graphen zusammengeführt werden.</p>
 </section>
 <section id="zusammenfassung" class="level2">
 <h2 class="anchored" data-anchor-id="zusammenfassung">Zusammenfassung</h2>
-<p><em>muss noch ausformuliert werden</em></p>
-<ul>
-<li><p>Property-Graphen: flexibel aber dennoch nicht zu kompliziertes Werkzeug zur Strukturierung und Speicherung von Daten</p></li>
-<li><p>Standardisierung noch nicht abgeschlossen aber ausreichend</p></li>
-<li><p>Im Gegensatz zu RDF nicht aus Austauschformat gedacht</p></li>
-<li><p>PG und RDF lassen sich zumindest einfacher aufeinander abbilden als Formate in hierarchischen oder feldbasierten Formaten wie MARC, PICA, XML.</p></li>
-<li><p>Bei Interesse bitte mich ansprechen!</p></li>
-</ul>
+<p>Property-Graphen bilden ein flexibles und nicht zu kompliziertes Werkzeug zur Strukturierung, Speicherung und Auswertung vernetzter Daten. Im Gegensatz zu RDF sind Property Graphen allerdings nicht als allgemeines Austauschformat gedacht. Die VZG setzt Property-Graphen ein und ist an der laufenden Standardisierung beteiligt.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-pgspec" class="csl-entry" role="listitem">
 Chiba, Voß, Hirokazu. 2024. <span>„Property Graph Exchange Format“</span>. <a href="https://github.com/pg-format/specification">https://github.com/pg-format/specification</a>.
