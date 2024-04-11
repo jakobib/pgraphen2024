@@ -8,8 +8,8 @@ bibliography: references.bib
 ---
 
 Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch
-das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es dass
-ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt
+das Ausprobieren und Evaluieren neuer Verfahren und Techniken. So kommt es,
+dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt
 NFDI4Objects, verstärkt mit so genannten Property-Graphen zur Strukturierung
 und Verarbeitung von (Meta)daten beschäftige. 
 
