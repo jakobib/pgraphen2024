@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -204,7 +184,7 @@ MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</co
 </section>
 <section id="property-graph-exchange-format" class="level2">
 <h2 class="anchored" data-anchor-id="property-graph-exchange-format">Property Graph Exchange Format</h2>
-<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das <em>Property Graph Exchange Format</em> <span class="citation" data-cites="pgspec">(<a href="#ref-pgspec" role="doc-biblioref">Chiba 2024</a>)</span>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL).</p>
+<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das <a href="https://github.com/pg-format/specification"><em>Property Graph Exchange Format</em></a>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL).</p>
 <div id="lst-pg" class="pg listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -374,14 +354,9 @@ Tabelle&nbsp;1: RDF und Property-Graphen im Vergleich
 <section id="zusammenfassung" class="level2">
 <h2 class="anchored" data-anchor-id="zusammenfassung">Zusammenfassung</h2>
 <p>Property-Graphen bilden ein flexibles und nicht zu kompliziertes Werkzeug zur Strukturierung, Speicherung und Auswertung vernetzter Daten. Im Gegensatz zu RDF sind Property Graphen allerdings nicht als allgemeines Austauschformat gedacht. Die VZG setzt Property-Graphen ein und ist an der laufenden Standardisierung beteiligt.</p>
-
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Literatur</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-pgspec" class="csl-entry" role="listitem">
-Chiba, Voß, Hirokazu. 2024. <span>„Property Graph Exchange Format“</span>. <a href="https://github.com/pg-format/specification">https://github.com/pg-format/specification</a>.
-</div>
-</div></section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
