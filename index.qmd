@@ -72,7 +72,7 @@ RDF-Format erklärt.
 
 Etabliert wurden Property-Graphen insbesondere durch das
 Datenbankmanagementsystem (DBMS) [Neo4J]. Die Open-Source-Software war lange
-Marktführer in diesem Bereich und setze dort Standards wie die Abfragesprache
+Marktführer in diesem Bereich und setzte dort Standards wie die Abfragesprache
 *Cypher* (siehe @lst-cypher und @lst-match), die inzwischen auch von anderen
 Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS [Kùzu],
 [Memgraph] und [FalkorDB]. Im letzten Update des SQL-Standard (SQL:2023) wurde
@@ -113,7 +113,7 @@ sein wie die Datenbasis: so würde eine Frage nach den Kindern von Anakin nur
 Luke ergeben, weil seine Zwillingsschwester Leia im Beispiel-Graph fehlt.
 Grundsätzlich stellt die Modellierung von Property-Graphen aber ein
 leistungsfähiges und flexibels Werkzeug vor allem für semi-strukturierte und
-verknüpfte Daten da.
+verknüpfte Daten dar.
 
 
 ## Property Graph Exchange Format
@@ -128,13 +128,13 @@ Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und
 PG-JSONL). 
 
 ```{#lst-pg .pg lst-cap="Beispiel-Graph im PG Format"}
-# Knoten mit Knoten-Typ (Label) und Eigenschaften
+# Knoten mit Knoten-Label und Eigenschaften
 Padmé  :person  gender:female
 Anakin :person  gender:male                 
 Luke   :person  gender:male                 
 R2D2   :robot              
    
-# Kanten mit Kanten-Typ (Label) und Eigenschaften
+# Kanten mit Kanten-Label und Eigenschaften
 Padmé  -> R2D2   :owns      episode:1
 Padmé  -- Anakin :marriage  episode:2
 Anakin -> R2D2   :owns      episode:2    
@@ -143,7 +143,7 @@ Padmé  -> Luke   :child     episode:3
 Luke   -> R2D2   :owns      episode:4
 ```
 
-und wird durch die Implementierung der Programmbibliothek
+Sie wird durch die Implementierung der Programmbibliothek
 [pgraphs](https://www.npmjs.com/package/pgraphs) zur Konvertierung zwischen
 verschiedenen Graph-Formaten und Datenbanksystemen begleitet. So wurde der
 Beispielgraph in Neo4J in @lst-cypher automatisch mit dem Aufruf 
@@ -152,21 +152,21 @@ Beispielgraph in Neo4J in @lst-cypher automatisch mit dem Aufruf
 
 ## Vergleich mit RDF
 
-RDF ist ein alternatives Graph-basiertes Datenmodell, das zusammen mit Konzepte
-wie Linked Data und Semantic seit Jahrzehnten propagiert wird. Rein formal
-bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten als
-"Ressourcen" und Kanten als "Triples" bezeichnet werden. Kanten-Label heißen in
-RDF "Properties", Entsprechungen zu Knoten-Label und Eigenschaften gibt dagegen
-nicht.
+RDF ist ein alternatives Graph-basiertes Datenmodell, das zusammen mit
+Konzepten wie Linked Data und Semantic seit Jahrzehnten propagiert wird. Rein
+formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten
+als "Ressourcen" und Kanten als "Triples" bezeichnet werden. Kanten-Label
+heißen in RDF "Properties", Entsprechungen zu Knoten-Label und Eigenschaften
+gibt dagegen nicht.
 
 Abgesehen von formalen Unterschieden, die sich durch Datenkonvertierung
-weitgehend überbrücken lassen, ist hilfreich die unterschiedliche Motivationen
-zu verstehen, aus denen RDF und Property Graphen jeweils entstanden sind: RDF
-ist grundsätzlich ein Austauschformat zum Publizieren und Zusammenführen von
-Daten.  Grundstein bilden die übergreifend nutzbaren URIs zur weltweit
-eindeutigen Identifizierung von Konzepten. Bei Property-Graphen geht es dagegen
-primär um die effiziente Speicherung und Auswertung von vernetzen Daten in
-einer abgeschlossenen Datenbank.
+weitgehend überbrücken lassen, ist es hilfreich die unterschiedliche
+Motivationen zu verstehen, aus denen RDF und Property Graphen jeweils
+entstanden sind: RDF ist grundsätzlich ein Austauschformat zum Publizieren und
+Zusammenführen von Daten.  Grundstein bilden die übergreifend nutzbaren URIs
+zur weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen
+geht es dagegen primär um die effiziente Speicherung und Auswertung von
+vernetzten Daten in einer abgeschlossenen Datenbank.
 
 Zum Vergleich zeigt @lst-ttl den Beispiel-Graphen in RDF-Turtle-Syntax und
 @lst-sparql die Entsprechung der ersten Cypher-Abfrage aus @lst-match in der
@@ -214,7 +214,7 @@ flowchart LR
 ```
 
 Mit der kommenden Version RDF 1.2 (auch *RDF-star*) können RDF-Triple mit
-weiteren Tripeln angereichtert werden, so dass ine direkte Entsprechung zu
+weiteren Tripeln angereichert werden, so dass eine direkte Entsprechung zu
 Kanten-Eigenschaften möglich wäre (siehe @lst-ttl2 und @lst-sparql2). Abgesehen
 von der begrenzten Software-Unterstützung werden Daten mit dieser Erweiterung
 allerdings nicht unbedingt übersichtlicher.
@@ -268,5 +268,5 @@ PG-Format mit Property-Graphen zusammengeführt werden.
 Property-Graphen bilden ein flexibles und nicht zu kompliziertes Werkzeug zur
 Strukturierung, Speicherung und Auswertung vernetzter Daten. Im Gegensatz zu
 RDF sind Property Graphen allerdings nicht als allgemeines Austauschformat
-gedacht. Die VZG setzt Property-Graphen ein und ist an der laufenden
-Standardisierung beteiligt. 
+gedacht. Die VZG setzt Property-Graphen für Datenanalysen ein und ist an der
+laufenden Standardisierung beteiligt. 
