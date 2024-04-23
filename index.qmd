@@ -122,7 +122,7 @@ Während die Standardisierung der Datenbanksprache Cypher relativ weit
 fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch
 von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota
 Yamanaka und Shota Matsumoto entwickele ich deshalb das [*Property Graph
-Exchange Format*](https://github.com/pg-format/specification). @lst-pg zeigt
+Exchange Format*](https://pg-format.github.io/specification/). @lst-pg zeigt
 die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die
 Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und
 PG-JSONL). 

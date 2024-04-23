@@ -184,7 +184,7 @@ MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</co
 </section>
 <section id="property-graph-exchange-format" class="level2">
 <h2 class="anchored" data-anchor-id="property-graph-exchange-format">Property Graph Exchange Format</h2>
-<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das <a href="https://github.com/pg-format/specification"><em>Property Graph Exchange Format</em></a>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL).</p>
+<p>Während die Standardisierung der Datenbanksprache Cypher relativ weit fortgeschritten ist, gibt es noch kein etabliertes Dateiformat zum Austausch von Property-Graphen. Zusammen mit den Wissenschaftlern Hirokazu Chiba, Ryota Yamanaka und Shota Matsumoto entwickele ich deshalb das <a href="https://pg-format.github.io/specification/"><em>Property Graph Exchange Format</em></a>. <a href="#lst-pg" class="quarto-xref">Listing&nbsp;3</a> zeigt die Kodierung des vollständigen Beispiel-Graphen im PG-Format. Die Standardisierung beinhaltet äquivalente Kodierungen in JSON (PG-JSON und PG-JSONL).</p>
 <div id="lst-pg" class="pg listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
