@@ -1,10 +1,20 @@
 ---
 title: "Property-Graphen: eine kurze Einführung"
 lang: de
+date: 2024-04-24
 authors:
   - name: Jakob Voß
     affiliation: Verbundzentrale des GBV (VZG)
+    affiliation-url: "https://www.gbv.de/"
+citation:
+  type: "article"
+  container-title: "VZG Aktuell"
+  doi: "10.5281/zenodo.10971391"
+  volume: "2024"
+  issue: "1"
+  url: "https://jakobib.github.io/pgraphen2024/"
 bibliography: references.bib
+notebook-links: false
 ---
 
 Zu den Tätigkeiten der Stabstelle Forschung und Entwicklung der VZG gehört auch
@@ -13,8 +23,8 @@ dass ich mich seit Anfang 2024, angeregt durch einen Anwendungsfall im Projekt
 NFDI4Objects, verstärkt mit so genannten Property-Graphen zur Strukturierung
 und Verarbeitung von (Meta)daten beschäftige. 
 
-Property-Graphen (oft auch *Labeled Property Graphen*) fallen als
-Datenbankmodell unter die so genannten NoSQL-Datenbanken und noch spezieller
+Property-Graphen (oft auch *Labeled-Property-Graphen*) fallen als
+Datenbankmodell unter die sogenannten NoSQL-Datenbanken, spezieller betrachtet
 unter die Graphdatenbanken. Hierbei werden Daten nicht wie bei SQL in Form von
 Tabellen sondern in Form von Graphen aus *Knoten* gespeichert, die durch
 *Kanten* miteinander verbunden sind. Eine Besonderheit von Property-Graphen
@@ -39,6 +49,7 @@ auf die Beziehung zwischen Padmé und Anakin sind alle Kanten gerichtet.
 ```{mermaid}
 %%| label: fig-image
 %%| fig-cap: Visualisierung des Beispiel-Graphen
+%%| fig-width: 100%
 flowchart LR
    Padme["<b>Padmé</b><br><i>person</i><br><tt>gender:female</tt>"]
    Anakin["<b>Anakin</b><br><i>person</i><br><tt>gender:male</tt>"]              
@@ -76,15 +87,14 @@ Marktführer in diesem Bereich und setzte dort Standards wie die Abfragesprache
 *Cypher* (siehe @lst-cypher und @lst-match), die inzwischen auch von anderen
 Systemen unterstützt wird. Dazu zählen derzeit die Open-Source-DBMS [Kùzu],
 [Memgraph] und [FalkorDB]. Im letzten Update des SQL-Standard (SQL:2023) wurde
-zumdem unter dem Namen SQL/PGQ eine Erweiterung für Property-Graphen in
+zudem unter dem Namen SQL/PGQ eine Erweiterung für Property-Graphen in
 SQL-Datenbanken definiert. Es ist also davon auszugehen, dass in Zukunft
-weitere DBMS Property-Graphen unterstützen.
+weitere Datenbankmanagementsysteme Property-Graphen unterstützen.
 
 Der Beispielgraph kann in Neo4J oder in einer damit kompatiblen Datenbank mit
 den Cypher-Statements in @lst-cypher angelegt werden. Da Knoten-Identifier in
 der Datenbank rein intern sind, sind die Namen zusätzlich als Eigenschaft
-`name` angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, daher ist
-die Beziehung zwischen Padmé und Anakin weggelassen.
+`name` angegeben. Außerdem unterstützt Cypher nur gerichtete Kanten, weshalb die Beziehung zwischen Padmé und Anakin weggelassen worden ist.
 
 ```{#lst-cypher .cypher lst-cap="Beispiel-Graph mit Cypher-Statements"}
 CREATE (Anakin:person {gender:"male", name:"Anakin"})
@@ -152,30 +162,31 @@ Beispielgraph in Neo4J in @lst-cypher automatisch mit dem Aufruf
 
 ## Vergleich mit RDF
 
-RDF ist ein alternatives Graph-basiertes Datenmodell, das zusammen mit
-Konzepten wie Linked Data und Semantic seit Jahrzehnten propagiert wird. Rein
-formal bestehen Daten auch im RDF-Modell aus Knoten und Kanten, wobei Knoten
-als "Ressourcen" und Kanten als "Triples" bezeichnet werden. Kanten-Label
-heißen in RDF "Properties", Entsprechungen zu Knoten-Label und Eigenschaften
-gibt dagegen nicht.
+Das *Resource Description Framework* (RDF) ist ein alternatives Graph-basiertes
+Datenmodell, das zusammen mit Konzepten wie Linked Data und Semantic seit
+Jahrzehnten propagiert wird. Rein formal bestehen Daten auch im RDF-Modell aus
+Knoten und Kanten, wobei Knoten als "Ressourcen" und Kanten als "Triples"
+bezeichnet werden. Kanten-Label heißen in RDF "Properties", Entsprechungen zu
+Knoten-Label und Eigenschaften gibt dagegen nicht.
 
 Abgesehen von formalen Unterschieden, die sich durch Datenkonvertierung
-weitgehend überbrücken lassen, ist es hilfreich die unterschiedliche
+weitgehend überbrücken lassen, ist es hilfreich die unterschiedlichen
 Motivationen zu verstehen, aus denen RDF und Property Graphen jeweils
 entstanden sind: RDF ist grundsätzlich ein Austauschformat zum Publizieren und
-Zusammenführen von Daten.  Grundstein bilden die übergreifend nutzbaren URIs
-zur weltweit eindeutigen Identifizierung von Konzepten. Bei Property-Graphen
-geht es dagegen primär um die effiziente Speicherung und Auswertung von
-vernetzten Daten in einer abgeschlossenen Datenbank.
+Zusammenführen von Daten. Den Grundstein bilden die übergreifend nutzbaren
+*Uniform Resource Identifier* (URIs) zur weltweit eindeutigen Identifizierung
+von Konzepten. Bei Property-Graphen geht es dagegen primär um die effiziente
+Speicherung und Auswertung von vernetzten Daten in einer abgeschlossenen
+Datenbank.
 
 Zum Vergleich zeigt @lst-ttl den Beispiel-Graphen in RDF-Turtle-Syntax und
 @lst-sparql die Entsprechung der ersten Cypher-Abfrage aus @lst-match in der
-RDF-eigenen Abfragesprache SPARQL. Die Rolle der Knoten-Label und
-Knoten-Eigenschaften übernehmen in RDF zusätzliche Kanten. Kanten-Eigenschaften
-und ungerichteten Kanten sind in diesem Beispiel dagegen weggelassen, weil ihre
-Entsprechung in RDF etwas komplexer zu modellieren ist. Obwohl der RDF-Graph
-(@fig-rdf-image) weniger Informationen enthält, ist er im Vergleich zu
-@fig-image etwas unübersichtlicher. 
+RDF-eigenen Abfragesprache SPARQL. Die Rolle der Knoten-Labels und
+Knoten-Eigenschaften übernehmen in RDF zusätzliche Kanten. Die
+Kanten-Eigenschaften und ungerichtete Kanten sind in diesem Beispiel dagegen
+weggelassen, weil ihre Entsprechung in RDF etwas komplexer zu modellieren ist.
+Obwohl der RDF-Graph (@fig-rdf-image) weniger Informationen enthält, ist er im
+Vergleich zu @fig-image etwas unübersichtlicher. 
 
 ```{#lst-ttl .ttlr lst-cap="Beispiel-Graph in RDF/Turtle (ohne Kanten-Eigenschaften)"}
 <Padmé>  a <person> ; <gender> "female" .
@@ -198,6 +209,7 @@ SELECT ?p { ?p <child> <Luke> . <Luke> a <person> }
 ```{mermaid}
 %%| label: fig-rdf-image
 %%| fig-cap: Visualisierung des Beispiel-Graphen in RDF
+%%| fig-width: 3
 flowchart LR
    male([male])
    female([female])
@@ -216,8 +228,8 @@ flowchart LR
 Mit der kommenden Version RDF 1.2 (auch *RDF-star*) können RDF-Triple mit
 weiteren Tripeln angereichert werden, so dass eine direkte Entsprechung zu
 Kanten-Eigenschaften möglich wäre (siehe @lst-ttl2 und @lst-sparql2). Abgesehen
-von der begrenzten Software-Unterstützung werden Daten mit dieser Erweiterung
-allerdings nicht unbedingt übersichtlicher.
+von der begrenzten Unterstützung dieser Erweiterung in RDF-Werkzeugen werden
+Daten mit RDF-star allerdings nicht unbedingt übersichtlicher.
 
 ```{#lst-ttl2 .ttlr lst-cap="Kanten des Beispiel-Graph in RDF/Turtle 1.2"}
 <Padmé>  <owns> <R2D2>   {| <episode> 1 |} .
@@ -258,7 +270,7 @@ Abfragesprache SPARQL         | Abfragesprache Cypher
 An der VZG werden Property-Graphen vor allem im Projekt
 [NFDI4Objects](https://www.nfdi4objects.net/) eingesetzt. Darüber hinaus sollen
 Sacherschließungsdaten des K10plus für Analysen in einer Graphdatenbank
-indexiert werden. In beiden Fällen ist das Ergebnis ein so genannter *Knowledge
+indexiert werden. In beiden Fällen ist das Ergebnis ein sogenannter *Knowledge
 Graph*. Für die Integration mit anderen Datenquellen sollen beide Knowledge
 Graphen auch in RDF bereitgestellt und RDF-Daten durch Konvertierung in das
 PG-Format mit Property-Graphen zusammengeführt werden.

@@ -8,3 +8,11 @@ manuscript:
 format:
   html: default
   docx: default
+  pdf:
+    documentclass: scrartcl
+    papersize: a4
+    include-in-header: 
+      text: |
+        \usepackage{scrlayer-scrpage}
+        \rohead{VZG Aktuell 1/2024}
+        \lohead{\url{https://doi.org/10.5281/zenodo.10971391}}
