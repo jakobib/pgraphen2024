@@ -6,7 +6,9 @@ project:
 manuscript:
   article: index.qmd
 format:
-  html: default
+  html:
+    syntax-definitions:
+     - pg.xml
   docx: default
   pdf:
     documentclass: scrartcl

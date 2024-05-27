@@ -19,6 +19,40 @@
         margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
         vertical-align: middle;
       }
+      /* CSS for syntax highlighting */
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
     </style>
 
     <style>
@@ -297,19 +331,19 @@ MATCH (p)-[e:owns]-&gt;({name:"R2D2"}) WHERE e.episode &gt;= 2 RETURN p.name</co
 Listing&nbsp;3: Beispiel-Graph im PG Format
 </figcaption>
 <div aria-describedby="lst-pg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<pre id="lst-pg" class="pg"><code># Knoten mit Knoten-Label und Eigenschaften
-Padmé  :person  gender:female
-Anakin :person  gender:male                 
-Luke   :person  gender:male                 
-R2D2   :robot              
-   
-# Kanten mit Kanten-Label und Eigenschaften
-Padmé  -&gt; R2D2   :owns      episode:1
-Padmé  -- Anakin :marriage  episode:2
-Anakin -&gt; R2D2   :owns      episode:2    
-Anakin -&gt; Luke   :child     episode:3
-Padmé  -&gt; Luke   :child     episode:3 
-Luke   -&gt; R2D2   :owns      episode:4</code></pre>
+<div class="sourceCode" id="lst-pg"><pre class="sourceCode pg code-with-copy"><code class="sourceCode pg"><span id="lst-pg-1"><a href="#lst-pg-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Knoten mit Knoten-Label und Eigenschaften</span></span>
+<span id="lst-pg-2"><a href="#lst-pg-2" aria-hidden="true" tabindex="-1"></a>Padmé  <span class="dt">:person</span>  <span class="fu">gender:</span><span class="st">female</span></span>
+<span id="lst-pg-3"><a href="#lst-pg-3" aria-hidden="true" tabindex="-1"></a>Anakin <span class="dt">:person</span>  <span class="fu">gender:</span><span class="st">male</span>                 </span>
+<span id="lst-pg-4"><a href="#lst-pg-4" aria-hidden="true" tabindex="-1"></a>Luke   <span class="dt">:person</span>  <span class="fu">gender:</span><span class="st">male</span>                 </span>
+<span id="lst-pg-5"><a href="#lst-pg-5" aria-hidden="true" tabindex="-1"></a>R2D2   <span class="dt">:robot</span>              </span>
+<span id="lst-pg-6"><a href="#lst-pg-6" aria-hidden="true" tabindex="-1"></a><span class="co">   </span></span>
+<span id="lst-pg-7"><a href="#lst-pg-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Kanten mit Kanten-Label und Eigenschaften</span></span>
+<span id="lst-pg-8"><a href="#lst-pg-8" aria-hidden="true" tabindex="-1"></a>Padmé  <span class="cf">-&gt;</span> R2D2   <span class="dt">:owns</span>      <span class="fu">episode:</span><span class="dv">1</span></span>
+<span id="lst-pg-9"><a href="#lst-pg-9" aria-hidden="true" tabindex="-1"></a>Padmé  <span class="cf">--</span> Anakin <span class="dt">:marriage</span>  <span class="fu">episode:</span><span class="dv">2</span></span>
+<span id="lst-pg-10"><a href="#lst-pg-10" aria-hidden="true" tabindex="-1"></a>Anakin <span class="cf">-&gt;</span> R2D2   <span class="dt">:owns</span>      <span class="fu">episode:</span><span class="dv">2</span>    </span>
+<span id="lst-pg-11"><a href="#lst-pg-11" aria-hidden="true" tabindex="-1"></a>Anakin <span class="cf">-&gt;</span> Luke   <span class="dt">:child</span>     <span class="fu">episode:</span><span class="dv">3</span></span>
+<span id="lst-pg-12"><a href="#lst-pg-12" aria-hidden="true" tabindex="-1"></a>Padmé  <span class="cf">-&gt;</span> Luke   <span class="dt">:child</span>     <span class="fu">episode:</span><span class="dv">3</span> </span>
+<span id="lst-pg-13"><a href="#lst-pg-13" aria-hidden="true" tabindex="-1"></a>Luke   <span class="cf">-&gt;</span> R2D2   <span class="dt">:owns</span>      <span class="fu">episode:</span><span class="dv">4</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </figure>
 </div>
